@@ -1,5 +1,3 @@
-using System;
-
 namespace WeatherStackClient.Models
 {
     public class Location
