@@ -1,6 +1,6 @@
 namespace WeatherStackClient.Models
 {
-    public class ErrorMessage
+    public class ErrorResponse
     {
         public int Code { get; set; }
         public string Type { get; set; }
