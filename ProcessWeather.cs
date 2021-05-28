@@ -29,7 +29,7 @@ namespace WeatherStackClient
                     bool isHighUVIndex = message.Current.Uv_Index > 3;
                     bool isStrongWind = message.Current.Wind_Speed > 15;
             
-                    Console.WriteLine("{0}, {1} Current Weather", message.Location.Name, message.Location.Country);
+                    Console.WriteLine("{0}, {1} Current Weather", message.Location.Region, message.Location.Country);
                     Console.WriteLine("Should I go outside? {0}", !isRaining ? Yes : No);
                     Console.WriteLine("Should I wear sunscreen? {0}", isHighUVIndex ? Yes : No);
                     Console.WriteLine("Can I fly my kite? {0}", !isRaining && isStrongWind ? Yes : No);
@@ -45,7 +45,7 @@ namespace WeatherStackClient
 
         public WeatherMessage GetCurrentWeather()
         {
-            string query = string.Format("&query={0}", _location);
+            string query = "&query=" + _location;
             return WeatherService.GetTaskAsync("current", query).Result;
         }
     }
