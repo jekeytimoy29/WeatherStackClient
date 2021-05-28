@@ -1,6 +1,6 @@
 namespace WeatherStackClient.Models
 {
-    public class WeatherMessage
+    public class WeatherMessage : BaseMessage
     {
         public Request Request { get; set; }
         public Location Location { get; set; }

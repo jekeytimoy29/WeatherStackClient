@@ -1,7 +1,5 @@
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -21,11 +19,12 @@ namespace WeatherStackClient.Services
             _client.BaseAddress = new Uri(_url);
         }
 
-        public static async Task<WeatherMessage> GetWeatherAsync(string request, string queryCode)
+        public static async Task<WeatherMessage> GetTaskAsync(string operation, string param)
         {
             try
             {
-                return await _client.GetFromJsonAsync<WeatherMessage>("current?access_key=bb05d29904cfa9ecca5e6f3efabaa289&query=99501");
+                string query = operation + string.Format("?access_key={0}{1}", _accessKey, param);
+                return await _client.GetFromJsonAsync<WeatherMessage>(query);
             }
             catch(HttpRequestException e)
             {
@@ -38,6 +37,7 @@ namespace WeatherStackClient.Services
             }
 
             return null;
+
         }
     }
 }

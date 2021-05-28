@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using WeatherStackClient.Services;
 
 namespace WeatherStackClient
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            await ProcessWeather.DisplayResult();
+            Console.WriteLine("Enter Location City/Zipcode: ");
+            string input = Console.ReadLine();
+            ProcessWeather weather = new ProcessWeather(input);
+            weather.DisplayResult();
         }
     }
 }

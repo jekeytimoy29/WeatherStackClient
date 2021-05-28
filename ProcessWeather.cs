@@ -10,25 +10,43 @@ namespace WeatherStackClient
     {
         private readonly string _location;
 
-        public static async Task DisplayResult()
+        public ProcessWeather(string location)
         {
-            WeatherMessage message = await GetCurrentWeather();
-
-            string Yes = "Yes";
-            string No = "No";
-            bool isRaining = message.Current.Precip >= 40;
-            bool isHighUVIndex = message.Current.Uv_Index > 3;
-            bool isStrongWind = message.Current.Wind_Speed > 15;
-            
-            Console.WriteLine("{0}, {1} Current Weather", message.Location.Name, message.Location.Country);
-            Console.WriteLine("Should I go outside? {0}", !isRaining ? Yes : No);
-            Console.WriteLine("Should I wear sunscreen? {0}", isHighUVIndex ? Yes : No);
-            Console.WriteLine("Can I fly my kite? {0}", !isRaining && isStrongWind ? Yes : No);
+            _location = location;
         }
 
-        public static async Task<WeatherMessage> GetCurrentWeather()
+        public void DisplayResult()
         {
-            return await WeatherService.GetWeatherAsync("current", "_location");
+            WeatherMessage message = GetCurrentWeather();
+
+            if(message != null)
+            {
+                if(message.Current != null)
+                {
+                    string Yes = "Yes";
+                    string No = "No";
+                    bool isRaining = message.Current.Precip > 0;
+                    bool isHighUVIndex = message.Current.Uv_Index > 3;
+                    bool isStrongWind = message.Current.Wind_Speed > 15;
+            
+                    Console.WriteLine("{0}, {1} Current Weather", message.Location.Name, message.Location.Country);
+                    Console.WriteLine("Should I go outside? {0}", !isRaining ? Yes : No);
+                    Console.WriteLine("Should I wear sunscreen? {0}", isHighUVIndex ? Yes : No);
+                    Console.WriteLine("Can I fly my kite? {0}", !isRaining && isStrongWind ? Yes : No);
+                }
+                else
+                {
+                    Console.WriteLine("Error: " + message.Error.Info);
+                }
+            }
+
+            message = null;
+        }
+
+        public WeatherMessage GetCurrentWeather()
+        {
+            string query = string.Format("&query={0}", _location);
+            return WeatherService.GetTaskAsync("current", query).Result;
         }
     }
 }
